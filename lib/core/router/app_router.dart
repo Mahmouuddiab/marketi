@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marketi/features/auth/presentation/screens/login_screen.dart';
 import 'package:marketi/features/auth/presentation/screens/register_screen.dart';
 import 'package:marketi/features/boarding%20pages/screen/on_boarding_screen.dart';
 import 'app_routes.dart';
@@ -10,6 +11,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => OnBoardingScreen());
       case AppRoutes.register:
         return MaterialPageRoute(builder: (_) => RegisterScreen());
+      case AppRoutes.login:
+        return MaterialPageRoute(builder: (_) => LoginScreen());
       default:
         return MaterialPageRoute(
           builder:
