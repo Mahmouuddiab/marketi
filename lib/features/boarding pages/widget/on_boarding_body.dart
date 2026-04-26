@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../model/on_boarding_model.dart';
 
 class OnBoardingBody extends StatelessWidget {
@@ -13,11 +14,11 @@ class OnBoardingBody extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(model.image, height: 260),
-          const SizedBox(height: 40),
-          Image.asset(model.titleImage, height: 40),
-          const SizedBox(height: 30),// Title as Image
-          Image.asset(model.descImage, height: 90),  // Description as Image
+          Image.asset(model.image, height: 260.h),
+          SizedBox(height: 40.h),
+          Image.asset(model.titleImage, height: 40.h),
+          SizedBox(height: 30.h),// Title as Image
+          Image.asset(model.descImage, height: 90.h),  // Description as Image
         ],
       ),
     );
