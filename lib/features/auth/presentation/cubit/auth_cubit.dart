@@ -1,13 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:marketi/features/auth/domain/entity/login_entity.dart';
 import 'package:marketi/features/auth/domain/entity/register_entity.dart';
+import 'package:marketi/features/auth/domain/usecase/login_usecase.dart';
 import 'package:marketi/features/auth/domain/usecase/register_usecase.dart';
 import 'package:marketi/features/auth/presentation/cubit/auth_state.dart';
 
 @injectable
 class AuthCubit extends Cubit<AuthState>{
   RegisterUseCase registerUseCase;
-  AuthCubit(this.registerUseCase):super(AuthInitialState());
+  LoginUseCase loginUseCase;
+  AuthCubit(this.registerUseCase,this.loginUseCase):super(AuthInitialState());
 
   Future<void> register(RegisterEntity registerEntity)async{
     emit(RegisterLoadingState());
@@ -18,6 +21,19 @@ class AuthCubit extends Cubit<AuthState>{
       },
           (r) {
         emit(RegisterSuccessState());
+      },
+    ) ;
+  }
+
+  Future<void> login(LoginEntity loginEntity)async{
+    emit(LoginLoadingState());
+    final response = await loginUseCase.call(loginEntity);
+    return response.fold(
+          (l) {
+        emit(LoginErrorState(error: "can't login ${l.message}"));
+      },
+          (r) {
+        emit(LoginSuccessState());
       },
     ) ;
   }

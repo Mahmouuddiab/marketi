@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:marketi/core/di/di.dart';
+import 'package:marketi/core/router/app_routes.dart';
 import 'package:marketi/core/toast/app_toast.dart';
 import 'package:marketi/core/utils/app_colors.dart';
 import 'package:marketi/core/validator/app_validator.dart';
@@ -192,7 +193,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              /// go to login screen
+                              Navigator.pushReplacementNamed(context, AppRoutes.login);
                             },
                             child: Text(
                               " Login",
