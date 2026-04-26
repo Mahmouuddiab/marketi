@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:marketi/core/router/app_routes.dart';
 import 'package:marketi/core/utils/app_colors.dart';
 import 'package:marketi/core/utils/app_images.dart';
@@ -88,7 +89,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: SizedBox(
         width: double.infinity,
-        height: 55,
+        height: 55.h,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primaryColor,
