@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'Marketi',
           debugShowCheckedModeBanner: false,
-          initialRoute: AppRoutes.onBoarding,
+          initialRoute: AppRoutes.splash,
           onGenerateRoute: AppRouter.generateRoute,
           builder: (context, widget) {
             return MediaQuery(
