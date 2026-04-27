@@ -43,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state is LoginSuccessState) {
             AppToast.success(context, "Login successfully");
+            Navigator.pushReplacementNamed(context, AppRoutes.root);
           }
 
           if (state is LoginErrorState) {

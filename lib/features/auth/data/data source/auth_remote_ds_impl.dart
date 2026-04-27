@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:marketi/core/cache/cache_helper.dart';
 import 'package:marketi/core/network/dio_helper.dart';
 import 'package:marketi/features/auth/data/data%20source/auth_remote_ds.dart';
 import 'package:marketi/features/auth/data/models/login_model.dart';
@@ -47,7 +48,9 @@ class AuthRemoteDsImpl implements AuthRemoteDs {
      );
      if(response.statusCode == 200){
        final user = LoginModel.fromJson(response.data);
-       print("login message : ${user.message}");
+       final token = user.token;
+       CacheHelper.saveToken(token);
+       print("user token : $token");
        return unit ;
      }
      else{
