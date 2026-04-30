@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:marketi/core/utils/app_colors.dart';
 import 'package:marketi/features/cart/cart_screen.dart';
 import 'package:marketi/features/favorite/favorite_screen.dart';
-import 'package:marketi/features/home/home_screen.dart';
+import 'package:marketi/features/home/presentation/screens/home_screen.dart';
 import 'package:marketi/features/profile/profile_screen.dart';
 
 class Root extends StatefulWidget {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:marketi/core/utils/app_colors.dart';
+import '../../../../core/utils/app_colors.dart';
 
-class CustomTextField extends StatelessWidget {
-  String label;
-  TextEditingController controller;
+class HomeField extends StatelessWidget {
+  String hintTxt;
+  TextEditingController? controller;
   String? Function(String?)? validator;
   bool obscureText;
   Widget? suffixIcon;
@@ -12,18 +12,18 @@ class CustomTextField extends StatelessWidget {
   void Function(String)? onChanged;
   TextInputType? keyboardType;
   Widget? prefixIcon;
-  CustomTextField({
-    super.key,
-    required this.label,
-    required this.controller,
-    this.validator,
-    this.obscureText= false,
-    this.suffixIcon,
-    this.isDense,
-    this.onChanged,
-    this.keyboardType,
-    this.prefixIcon
-  });
+   HomeField({
+     super.key,
+     required this.hintTxt,
+     this.controller,
+     this.validator,
+     this.obscureText= false,
+     this.suffixIcon,
+     this.isDense,
+     this.onChanged,
+     this.keyboardType,
+     this.prefixIcon
+   });
 
   @override
   Widget build(BuildContext context) {
@@ -35,21 +35,21 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       onTapOutside: (event) => FocusScope.of(context).unfocus(),
       decoration: InputDecoration(
-        labelText: label,
+        hintText: hintTxt,
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
         isDense: isDense,
         hintStyle: GoogleFonts.poppins(
-          fontSize: 15,
-          color: AppColors.gray1
+            fontSize: 15,
+            color: AppColors.gray1
         ),
         labelStyle: GoogleFonts.poppins(
             fontSize: 15,
             color: AppColors.gray1
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.gray1)
+            borderRadius: BorderRadius.circular(14),
+            borderSide: BorderSide(color: AppColors.gray1)
         ),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
