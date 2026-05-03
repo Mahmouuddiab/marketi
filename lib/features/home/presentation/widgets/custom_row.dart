@@ -4,7 +4,8 @@ import 'package:marketi/core/utils/app_colors.dart';
 
 class CustomRow extends StatelessWidget {
   String text1, text2;
-  CustomRow({super.key, required this.text1, required this.text2});
+  void Function()? onTap;
+  CustomRow({super.key, required this.text1, required this.text2,this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -14,17 +15,20 @@ class CustomRow extends StatelessWidget {
         Text(
           text1,
           style: GoogleFonts.poppins(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: AppColors.darkblue700,
           ),
         ),
-        Text(
-          text2,
-          style: GoogleFonts.poppins(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
+        GestureDetector(
+          onTap: onTap,
+          child: Text(
+            text2,
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryColor,
+            ),
           ),
         ),
       ],

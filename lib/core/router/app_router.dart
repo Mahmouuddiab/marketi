@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:marketi/features/auth/presentation/screens/login_screen.dart';
 import 'package:marketi/features/auth/presentation/screens/register_screen.dart';
 import 'package:marketi/features/boarding%20pages/screen/on_boarding_screen.dart';
+import 'package:marketi/features/home/presentation/screens/all_product_screeen.dart';
 import 'package:marketi/root.dart';
 import 'package:marketi/splash_screen.dart';
 import 'app_routes.dart';
@@ -19,6 +20,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => LoginScreen());
       case AppRoutes.root:
         return MaterialPageRoute(builder: (_) => Root());
+      case AppRoutes.allProduct:
+        return MaterialPageRoute(builder: (_) => AllProductsScreen());
       default:
         return MaterialPageRoute(
           builder:
