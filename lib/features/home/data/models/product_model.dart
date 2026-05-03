@@ -25,25 +25,36 @@ class ProductModel extends ProductEntity {
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      id: json['id'],
-      title: json['title'],
-      description: json['description'],
-      category: json['category'],
-      price: (json['price'] as num).toDouble(),
-      discountPercentage: (json['discountPercentage'] as num).toInt(),
-      rating: (json['rating'] as num).toDouble(),
-      stock: json['stock'],
-      tags: List<String>.from(json['tags']),
-      brand: json['brand'],
-      sku: json['sku'],
-      weight: json['weight'],
-      warrantyInformation: json['warrantyInformation'],
-      shippingInformation: json['shippingInformation'],
-      availabilityStatus: json['availabilityStatus'],
-      returnPolicy: json['returnPolicy'],
-      minimumOrderQuantity: json['minimumOrderQuantity'],
-      images: List<String>.from(json['images']),
-      thumbnail: json['thumbnail'],
+      id: json['id'] ?? 0,
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
+      category: json['category'] ?? '',
+      price: (json['price'] ?? 0).toDouble(),
+      discountPercentage: (json['discountPercentage'] ?? 0).toInt(),
+      rating: (json['rating'] ?? 0).toDouble(),
+      stock: json['stock'] ?? 0,
+
+      tags: (json['tags'] as List?)
+          ?.map((e) => e.toString())
+          .toList() ??
+          [],
+
+      brand: json['brand'] ?? '',
+      sku: json['sku'] ?? '',
+      weight: json['weight'] ?? 0,
+
+      warrantyInformation: json['warrantyInformation'] ?? '',
+      shippingInformation: json['shippingInformation'] ?? '',
+      availabilityStatus: json['availabilityStatus'] ?? '',
+      returnPolicy: json['returnPolicy'] ?? '',
+      minimumOrderQuantity: json['minimumOrderQuantity'] ?? 0,
+
+      images: (json['images'] as List?)
+          ?.map((e) => e.toString())
+          .toList() ??
+          [],
+
+      thumbnail: json['thumbnail'] ?? '',
     );
   }
 }

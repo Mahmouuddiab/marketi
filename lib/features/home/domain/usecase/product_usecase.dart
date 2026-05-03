@@ -6,5 +6,6 @@ import 'package:marketi/features/home/domain/repository/home_repository.dart';
 class ProductUseCase {
   HomeRepository repository;
   ProductUseCase(this.repository);
-  Future<List<ProductEntity>> call()=> repository.products();
+  Future<List<ProductEntity>> call({required int skip, required int limit}) =>
+      repository.products(skip: skip, limit: limit);
 }
