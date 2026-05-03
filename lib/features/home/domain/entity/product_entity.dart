@@ -4,7 +4,7 @@ class ProductEntity {
   final String description;
   final String category;
   final double price;
-  final double discountPercentage;
+  final int discountPercentage;
   final double rating;
   final int stock;
   final List<String> tags;
