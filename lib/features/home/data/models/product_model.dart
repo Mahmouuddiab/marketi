@@ -30,7 +30,7 @@ class ProductModel extends ProductEntity {
       description: json['description'],
       category: json['category'],
       price: (json['price'] as num).toDouble(),
-      discountPercentage: (json['discountPercentage'] as num).toDouble(),
+      discountPercentage: (json['discountPercentage'] as num).toInt(),
       rating: (json['rating'] as num).toDouble(),
       stock: json['stock'],
       tags: List<String>.from(json['tags']),

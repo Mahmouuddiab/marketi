@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:marketi/core/utils/app_colors.dart';
-
 
 class ProductCard extends StatefulWidget {
   const ProductCard({
-    Key? key,
+    super.key,
     required this.image,
     required this.price,
     required this.name,
     required this.rate,
+    required this.discount,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final String image;
   final String price;
   final String name;
   final String rate;
+  final String discount;
   final VoidCallback onTap;
 
   @override
@@ -40,7 +42,7 @@ class _ProductCardState extends State<ProductCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
+          Flexible(
             child: Stack(
               children: [
                 Padding(
@@ -87,8 +89,38 @@ class _ProductCardState extends State<ProductCard> {
                         padding: EdgeInsets.all(4.w),
                         child: Icon(
                           isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorite ? AppColors.black : AppColors.darkblue900,
+                          color: isFavorite
+                              ? AppColors.black
+                              : AppColors.darkblue900,
                           size: 20.sp,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 10.h,
+                  left: 12.w,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(4.w),
+                      child: Text(
+                        "${widget.discount} %",
+                        style: GoogleFonts.poppins(
+                          color: AppColors.white,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
@@ -105,31 +137,40 @@ class _ProductCardState extends State<ProductCard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      widget.price,
+                    Row(
+                      children: [
+                        Text(
+                          "${widget.price} \$",
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                     Row(
                       children: [
+                        Icon(Icons.star, color: Colors.amber, size: 18.sp),
                         SizedBox(width: 4.w),
-                        Text(widget.rate),
+                        Text(
+                          widget.rate.toString(),
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ],
                     ),
                   ],
                 ),
-
-                Text(
-                  widget.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-
+                Text(widget.name, maxLines: 1, overflow: TextOverflow.ellipsis),
               ],
             ),
           ),
           GestureDetector(
             onTap: widget.onTap,
             child: Padding(
-              padding:  EdgeInsets.only(left: 20.h, right: 20.h,bottom: 8.h),
+              padding: EdgeInsets.only(left: 20.h, right: 20.h, bottom: 8.h),
               child: Container(
                 height: 30.h,
                 width: double.infinity,
@@ -139,8 +180,19 @@ class _ProductCardState extends State<ProductCard> {
                   border: Border.all(color: AppColors.lightBlue100),
                 ),
                 child: Center(
-                  child:  Text(
-                      "Add",
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 5,
+                    children: [
+                      Image.asset("assets/icons/Cart_Icon.png"),
+                      Text(
+                        "Add",
+                        style: GoogleFonts.poppins(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

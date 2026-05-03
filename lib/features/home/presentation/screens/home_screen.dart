@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:marketi/core/di/di.dart';
 import 'package:marketi/core/utils/app_colors.dart';
@@ -42,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                           Spacer(),
-                          Icon(Icons.notifications_none)
+                          SvgPicture.asset("assets/svg/bell_icon.svg")
                         ],
                       ),
                       SizedBox(height: 13.h,),
@@ -57,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                       CustomRow(text1: "Products", text2: "View all"),
                       SizedBox(height: 13.h,),
                       SizedBox(
-                        height: 300,
+                        height: 240,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: state.products.length,
@@ -68,6 +69,7 @@ class HomeScreen extends StatelessWidget {
                                 price: product.price.toString(),
                                 name: product.title,
                                 rate: product.rating.toString(),
+                                discount: product.discountPercentage.toString(),
                                 onTap: (){}
                             );
                             },

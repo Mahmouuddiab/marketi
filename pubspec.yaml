@@ -34,6 +34,7 @@ dependencies:
   injectable: ^3.0.0
   another_flushbar: ^1.12.32
   flutter_image_slideshow: ^0.1.6
+  flutter_svg: ^2.2.4
 
 dev_dependencies:
   build_runner:
@@ -64,5 +65,6 @@ flutter:
     - assets/
     - assets/images/
     - assets/icons/
+    - assets/svg/
 
 
