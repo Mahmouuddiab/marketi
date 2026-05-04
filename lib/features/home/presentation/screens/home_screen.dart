@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:marketi/features/home/presentation/widgets/brand_card.dart';
+import 'package:marketi/features/home/presentation/widgets/category_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
 import 'package:marketi/core/di/di.dart';
 import 'package:marketi/core/router/app_routes.dart';
 import 'package:marketi/core/utils/app_colors.dart';
@@ -40,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
           final isLoading = state is HomeLoading;
           final products = state is HomeSuccess ? state.products : [];
           final categories = state is HomeSuccess ? state.categories : [];
+          final brands = state is HomeSuccess ? state.brands : [];
 
           if (state is HomeError) {
             return Center(child: Text(state.message));
@@ -50,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
                   child: Column(
                     children: [
                       ///  Header
@@ -109,14 +112,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemCount: isLoading ? 5 : products.length,
                           itemBuilder: (context, index) {
                             final product = isLoading ? null : products[index];
-
                             return ProductCard(
                               image: product?.thumbnail ?? '',
                               price: product?.price.toString() ?? '',
                               name: product?.title ?? '',
                               rate: product?.rating.toString() ?? '',
-                              discount: product?.discountPercentage.toString() ?? '',
-                              onTap: () {},
+                              discount:
+                                  product?.discountPercentage.toString() ?? '',
+                              onTap: () {
+                                // product details
+                              },
                             );
                           },
                         ),
@@ -128,7 +133,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       CustomRow(
                         text1: "Categories",
                         text2: "View all",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.allCategory);
+                        },
                       ),
 
                       SizedBox(height: 13.h),
@@ -136,32 +143,49 @@ class _HomeScreenState extends State<HomeScreen> {
                       ///  Categories List
                       SizedBox(
                         height: 200,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: isLoading ? 5 : categories.length,
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 2,
+                            crossAxisSpacing: 2,
+                            childAspectRatio: 0.75,
+                          ),
+                          itemCount: isLoading ? 6 : categories.length,
                           itemBuilder: (context, index) {
-                            final category = isLoading
-                                ? null
-                                : categories[index];
-
-                            return Container(
-                              width: 120,
-                              margin: const EdgeInsets.only(right: 10),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: category != null
-                                    ? Image.network(
-                                        category.image,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Container(color: Colors.grey.shade300),
-                              ),
+                            final category = isLoading ? null : categories[index];
+                            return CategoryCard(
+                              category: category,
+                              onTap: (){
+                                // products by category screen
+                              },
                             );
                           },
                         ),
                       ),
 
-                      SizedBox(height: 20.h),
+                      SizedBox(height: 13.h),
+
+                      ///  Brands Header
+                      CustomRow(
+                        text1: "Brands",
+                        text2: "View all",
+                        onTap: () {},
+                      ),
+                      SizedBox(height: 13.h),
+                      
+                      /// Brand List
+                      SizedBox(
+                        height: 160,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: brands.length,
+                            itemBuilder: (context, index) {
+                              final brand = isLoading ? null : brands[index];
+                              return BrandCard(brand: brand) ;
+                            },
+                        ),
+                      )
                     ],
                   ),
                 ),

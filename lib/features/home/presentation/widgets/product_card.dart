@@ -140,7 +140,7 @@ class _ProductCardState extends State<ProductCard> {
                     Row(
                       children: [
                         Text(
-                          "${widget.price} \$",
+                          "\$ ${widget.price}",
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
@@ -150,7 +150,7 @@ class _ProductCardState extends State<ProductCard> {
                     ),
                     Row(
                       children: [
-                        Icon(Icons.star, color: Colors.amber, size: 18.sp),
+                        Image.asset("assets/icons/rate.png"),
                         SizedBox(width: 4.w),
                         Text(
                           widget.rate.toString(),

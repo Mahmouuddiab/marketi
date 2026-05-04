@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:marketi/features/home/domain/entity/brand_entity.dart';
 import 'package:marketi/features/home/domain/entity/category_entity.dart';
 import 'package:marketi/features/home/domain/entity/product_entity.dart';
+import 'package:marketi/features/home/domain/usecase/brand_usecase.dart';
 import 'package:marketi/features/home/domain/usecase/category_usecase.dart';
 import 'package:marketi/features/home/domain/usecase/product_usecase.dart';
 import 'package:marketi/features/home/presentation/cubit/home_state.dart';
@@ -10,10 +12,13 @@ import 'package:marketi/features/home/presentation/cubit/home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   final ProductUseCase productUseCase;
   final CategoryUseCase categoryUseCase;
-  HomeCubit(this.productUseCase,this.categoryUseCase) : super(HomeInitial());
+  final BrandUseCase brandUseCase;
+  HomeCubit(this.productUseCase, this.categoryUseCase, this.brandUseCase)
+    : super(HomeInitial());
 
   List<ProductEntity> products = [];
   List<CategoryEntity> categories = [];
+  List<BrandEntity> brands = [];
 
   int skip = 0;
   final int limit = 10;
@@ -30,22 +35,24 @@ class HomeCubit extends Cubit<HomeState> {
     hasMore = true;
 
     try {
-      final result = await productUseCase.call(
-        skip: skip,
-        limit: limit,
-      );
+      final result = await productUseCase.call(skip: skip, limit: limit);
       final categoryResult = await categoryUseCase.call();
+      final brandResult = await brandUseCase.call();
       products = result;
       categories = categoryResult;
+      brands = brandResult;
       if (result.length < limit) {
         hasMore = false;
       }
 
-      emit(HomeSuccess(
-        products: products,
-        hasMore: hasMore,
-        categories: categories,
-      ));
+      emit(
+        HomeSuccess(
+          products: products,
+          hasMore: hasMore,
+          categories: categories,
+          brands: brands,
+        ),
+      );
     } catch (e) {
       emit(HomeError(e.toString()));
     }
@@ -60,10 +67,7 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       skip += limit;
 
-      final result = await productUseCase.call(
-        skip: skip,
-        limit: limit,
-      );
+      final result = await productUseCase.call(skip: skip, limit: limit);
 
       if (result.isEmpty || result.length < limit) {
         hasMore = false;
@@ -71,11 +75,14 @@ class HomeCubit extends Cubit<HomeState> {
 
       products.addAll(result);
 
-      emit(HomeSuccess(
-        products: List.from(products),
-        hasMore: hasMore,
-        categories: List.from(categories),
-      ));
+      emit(
+        HomeSuccess(
+          products: List.from(products),
+          hasMore: hasMore,
+          categories: List.from(categories),
+          brands: List.from(brands),
+        ),
+      );
     } catch (e) {
       emit(HomeError(e.toString()));
     }
