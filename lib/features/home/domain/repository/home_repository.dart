@@ -1,3 +1,4 @@
+import 'package:marketi/features/home/domain/entity/brand_entity.dart';
 import 'package:marketi/features/home/domain/entity/category_entity.dart';
 import 'package:marketi/features/home/domain/entity/product_entity.dart';
 
@@ -8,4 +9,5 @@ abstract class HomeRepository {
   });
 
   Future<List<CategoryEntity>> categories();
+  Future<List<BrandEntity>> brands();
 }

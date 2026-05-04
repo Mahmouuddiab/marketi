@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:marketi/core/utils/app_colors.dart';
 import 'package:marketi/features/home/presentation/cubit/home_cubit.dart';
 import 'package:marketi/features/home/presentation/cubit/home_state.dart';
 import 'package:marketi/features/home/presentation/widgets/product_card.dart';
@@ -39,7 +40,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
     super.dispose();
   }
 
-  // Consistent Loading Shape
+
   Widget _buildLoadingIndicator({String message = "Loading..."}) {
     return Center(
       child: Container(
@@ -86,6 +87,12 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
         title: const Text("All Products"),
         centerTitle: true,
         elevation: 0,
+        leading: IconButton(
+            onPressed: (){
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios,color: AppColors.darkblue700,)
+        ),
       ),
       body: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {

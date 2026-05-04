@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:marketi/features/home/data/data%20source/home_remote_ds.dart';
+import 'package:marketi/features/home/domain/entity/brand_entity.dart';
 import 'package:marketi/features/home/domain/entity/category_entity.dart';
 import 'package:marketi/features/home/domain/entity/product_entity.dart';
 import 'package:marketi/features/home/domain/repository/home_repository.dart';
@@ -24,6 +25,12 @@ class HomeRepositoryImpl implements HomeRepository {
   @override
   Future<List<CategoryEntity>> categories() async{
     final dto = await remote.categories();
+    return dto ;
+  }
+
+  @override
+  Future<List<BrandEntity>> brands() async{
+    final dto = await remote.brands();
     return dto ;
   }
 

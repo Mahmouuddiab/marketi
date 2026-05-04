@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:marketi/core/cache/cache_helper.dart';
 import 'package:marketi/core/network/dio_helper.dart';
 import 'package:marketi/features/home/data/data%20source/home_remote_ds.dart';
+import 'package:marketi/features/home/data/models/brand_model.dart';
 import 'package:marketi/features/home/data/models/category_model.dart';
 import 'package:marketi/features/home/data/models/product_model.dart';
 
@@ -50,6 +51,29 @@ class HomeRemoteDsImpl implements HomeRemoteDs {
       final List data = response.data['list'];
       return data.map((json) => CategoryModel.fromJson(json)).toList();
     } else {
+      throw Exception('Server error: ${response.statusCode}');
+    }
+  }
+
+  @override
+  Future<List<BrandModel>> brands() async{
+    final token = await CacheHelper.getToken();
+    final response = await DioHelper.get(
+        url: "https://supermarket-dan1.onrender.com/api/v1/home/brands",
+        options: Options(
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
+        },
+      ),
+
+    );
+    if(response.statusCode == 200){
+      print("brands: ${response.data}");
+      final List data = response.data['list'];
+      return data.map((json) => BrandModel.fromJson(json)).toList();
+    }
+    else{
       throw Exception('Server error: ${response.statusCode}');
     }
   }
