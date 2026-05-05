@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:marketi/core/utils/app_colors.dart';
-import 'package:marketi/features/home/domain/entity/category_entity.dart';
+import 'package:marketi/features/home/domain/entity/brand_entity.dart';
 
-class CategoryListItem extends StatelessWidget {
-  final CategoryEntity category;
+class BrandListItem extends StatelessWidget {
+  final BrandEntity brand;
   final VoidCallback onTap;
 
-  const CategoryListItem({
+  const BrandListItem({
     super.key,
-    required this.category,
+    required this.brand,
     required this.onTap,
   });
 
@@ -70,15 +70,9 @@ class CategoryListItem extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Center(
-                      child: Image.network(
-                        category.image,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => const Icon(
-                          Icons.category_rounded,
-                          color: Colors.grey,
-                          size: 28,
-                        ),
-                        // Optional: Add a loading builder here
+                      child: Text(
+                        brand.emoji,
+                        style: const TextStyle(fontSize: 30),
                       ),
                     ),
                   ),
@@ -91,7 +85,7 @@ class CategoryListItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          category.name,
+                          brand.name,
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
