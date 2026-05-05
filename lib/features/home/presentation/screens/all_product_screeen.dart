@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:marketi/core/toast/app_toast.dart';
 import 'package:marketi/core/utils/app_colors.dart';
+import 'package:marketi/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:marketi/features/cart/presentation/cubit/cart_state.dart';
 import 'package:marketi/features/home/presentation/cubit/home_cubit.dart';
 import 'package:marketi/features/home/presentation/cubit/home_state.dart';
 import 'package:marketi/features/home/presentation/widgets/product_card.dart';
@@ -81,88 +84,101 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
-      appBar: AppBar(
-        title: const Text("All Products"),
-        centerTitle: true,
-        elevation: 0,
-        leading: IconButton(
-            onPressed: (){
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back_ios,color: AppColors.darkblue700,)
+    return BlocListener<CartCubit,CartState>(
+      listener: (context, state) {
+        if (state is AddToCartSuccess) {
+          AppToast.show("Added to cart",type: ToastType.success);
+        }
+
+        if (state is AddToCartError) {
+          AppToast.show("Failed to add",type: ToastType.error);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF8F9FA),
+        appBar: AppBar(
+          title: const Text("All Products"),
+          centerTitle: true,
+          elevation: 0,
+          leading: IconButton(
+              onPressed: (){
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back_ios,color: AppColors.darkblue700,)
+          ),
         ),
-      ),
-      body: BlocBuilder<HomeCubit, HomeState>(
-        builder: (context, state) {
-          if (state is HomeLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+        body: BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            if (state is HomeLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          if (state is HomeError) {
-            return Center(child: Text(state.message));
-          }
+            if (state is HomeError) {
+              return Center(child: Text(state.message));
+            }
 
-          if (state is HomeSuccess) {
-            return CustomRefreshIndicator(
-              onRefresh: _onRefresh,
-              builder: (context, child, controller) {
-                return Stack(
-                  children: [
-                    Transform.translate(
-                      offset: Offset(0, controller.value * 80),
-                      child: child,
+            if (state is HomeSuccess) {
+              return CustomRefreshIndicator(
+                onRefresh: _onRefresh,
+                builder: (context, child, controller) {
+                  return Stack(
+                    children: [
+                      Transform.translate(
+                        offset: Offset(0, controller.value * 80),
+                        child: child,
+                      ),
+                      if (controller.isLoading)
+                        Positioned(
+                          top: 10,
+                          left: 0,
+                          right: 0,
+                          child: _buildLoadingIndicator(message: "Refreshing"),
+                        ),
+                    ],
+                  );
+                },
+                child: CustomScrollView(
+                  controller: _scrollController,
+                  slivers: [
+                    SliverPadding(
+                      padding: const EdgeInsets.all(12),
+                      sliver: SliverGrid(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.77,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                            final product = state.products[index];
+                            return ProductCard(
+                              image: product.thumbnail,
+                              price: product.price.toString(),
+                              name: product.title,
+                              rate: product.rating.toString(),
+                              discount: product.discountPercentage.toString(),
+                              onTap: () {
+                                context.read<CartCubit>().addToCart(product.id);
+                              },
+                            );
+                          },
+                          childCount: state.products.length,
+                        ),
+                      ),
                     ),
-                    if (controller.isLoading)
-                      Positioned(
-                        top: 10,
-                        left: 0,
-                        right: 0,
-                        child: _buildLoadingIndicator(message: "Refreshing"),
+                    // This SliverToBoxAdapter spans the full width, centering your loader
+                    if (state.hasMore)
+                      SliverToBoxAdapter(
+                        child: _buildLoadingIndicator(message: "Loading"),
                       ),
                   ],
-                );
-              },
-              child: CustomScrollView(
-                controller: _scrollController,
-                slivers: [
-                  SliverPadding(
-                    padding: const EdgeInsets.all(12),
-                    sliver: SliverGrid(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.77,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                      ),
-                      delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                          final product = state.products[index];
-                          return ProductCard(
-                            image: product.thumbnail,
-                            price: product.price.toString(),
-                            name: product.title,
-                            rate: product.rating.toString(),
-                            discount: product.discountPercentage.toString(),
-                            onTap: () {},
-                          );
-                        },
-                        childCount: state.products.length,
-                      ),
-                    ),
-                  ),
-                  // This SliverToBoxAdapter spans the full width, centering your loader
-                  if (state.hasMore)
-                    SliverToBoxAdapter(
-                      child: _buildLoadingIndicator(message: "Loading"),
-                    ),
-                ],
-              ),
-            );
-          }
-          return const SizedBox();
-        },
+                ),
+              );
+            }
+            return const SizedBox();
+          },
+        ),
       ),
     );
   }

@@ -42,12 +42,12 @@ class _LoginScreenState extends State<LoginScreen> {
         bloc: authCubit,
         listener: (context, state) {
           if (state is LoginSuccessState) {
-            AppToast.success(context, "Login successfully");
+            AppToast.show("Success Login",type: ToastType.success);
             Navigator.pushReplacementNamed(context, AppRoutes.root);
           }
 
           if (state is LoginErrorState) {
-            AppToast.error(context, state.error);
+            AppToast.show("Success Fail",type: ToastType.error);
           }
         },
         builder: (context, state) {
