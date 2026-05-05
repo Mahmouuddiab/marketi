@@ -3,16 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketi/core/utils/app_colors.dart';
 import 'package:marketi/features/home/presentation/cubit/home_cubit.dart';
 import 'package:marketi/features/home/presentation/cubit/home_state.dart';
-import 'package:marketi/features/home/presentation/widgets/category_list_item.dart';
+import 'package:marketi/features/home/presentation/widgets/brand_list_item.dart';
 
-class AllCategoryScreen extends StatefulWidget {
-  const AllCategoryScreen({super.key});
+class AllBrandScreen extends StatefulWidget {
+  const AllBrandScreen({super.key});
 
   @override
-  State<AllCategoryScreen> createState() => _AllCategoryScreenState();
+  State<AllBrandScreen> createState() => _AllBrandScreenState();
 }
 
-class _AllCategoryScreenState extends State<AllCategoryScreen> {
+class _AllBrandScreenState extends State<AllBrandScreen> {
   @override
   void initState() {
     super.initState();
@@ -29,7 +29,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
         title: const Text(
-          "All Categories",
+          "All Brands",
           style: TextStyle(color: Colors.black, fontSize: 18),
         ),
         centerTitle: true,
@@ -62,13 +62,15 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
           if (state is HomeSuccess) {
             return ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              itemCount: state.categories.length,
+              itemCount: state.brands.length,
               separatorBuilder: (_, __) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
-                final category = state.categories[index];
-                return CategoryListItem(
-                    category: category,
-                    onTap: (){}
+                final brand = state.brands[index];
+                return BrandListItem(
+                    brand: brand,
+                    onTap: (){
+
+                    }
                 );
               },
             );

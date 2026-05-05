@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:marketi/core/router/app_routes.dart';
+import 'package:marketi/core/shimmer/shimmer_box.dart';
 import 'package:marketi/features/home/presentation/widgets/brand_card.dart';
 import 'package:marketi/features/home/presentation/widgets/category_card.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:marketi/core/di/di.dart';
-import 'package:marketi/core/router/app_routes.dart';
 import 'package:marketi/core/utils/app_colors.dart';
 import 'package:marketi/features/home/presentation/cubit/home_cubit.dart';
 import 'package:marketi/features/home/presentation/cubit/home_state.dart';
@@ -46,148 +46,189 @@ class _HomeScreenState extends State<HomeScreen> {
           if (state is HomeError) {
             return Center(child: Text(state.message));
           }
-          return Skeletonizer(
-            enabled: isLoading,
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                    children: [
-                      ///  Header
-                      Row(
-                        children: [
-                          Text(
-                            "Hello, User",
-                            style: GoogleFonts.poppins(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          const Spacer(),
-                          SvgPicture.asset(
-                            "assets/svg/notification_icon.svg",
-                            height: 25.h,
-                            width: 25.w,
-                          ),
-                        ],
-                      ),
 
-                      SizedBox(height: 13.h),
-
-                      ///  Search
-                      HomeField(
-                        hintTxt: "What are you looking for ?",
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: AppColors.darkblue700,
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ///  Header
+                    Row(
+                      children: [
+                        Text(
+                          "Hello, User",
+                          style: GoogleFonts.poppins(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                        suffixIcon: Image.asset("assets/icons/Filter_Icon.png"),
+                        const Spacer(),
+                        SvgPicture.asset(
+                          "assets/svg/notification_icon.svg",
+                          height: 25.h,
+                          width: 25.w,
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: 13.h),
+
+                    ///  Search
+                    isLoading
+                        ? const ShimmerBox(
+                      width: double.infinity,
+                      height: 50,
+                      borderRadius: 12,
+                    )
+                        : HomeField(
+                      hintTxt: "What are you looking for ?",
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: AppColors.darkblue700,
                       ),
+                      suffixIcon:
+                      Image.asset("assets/icons/Filter_Icon.png"),
+                    ),
 
-                      SizedBox(height: 15.h),
+                    SizedBox(height: 15.h),
 
-                      ///  Banner
-                      const BannerShow(),
+                    ///  Banner
+                    isLoading
+                        ? const ShimmerBox(
+                      width: double.infinity,
+                      height: 160,
+                      borderRadius: 16,
+                    )
+                        : const BannerShow(),
 
-                      SizedBox(height: 15.h),
+                    SizedBox(height: 15.h),
 
-                      ///  Products Header
-                      CustomRow(
-                        text1: "Products",
-                        text2: "View all",
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.allProduct);
+                    ///  Products Header
+                     CustomRow(
+                      text1: "Products",
+                      text2: "View all",
+                       onTap: (){
+                        Navigator.pushNamed(context, AppRoutes.allProduct);
+                       },
+                    ),
+
+                    SizedBox(height: 13.h),
+
+                    ///  Products List
+                    SizedBox(
+                      height: 240,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: isLoading ? 5 : products.length,
+                        itemBuilder: (context, index) {
+                          if (isLoading) {
+                            return const Padding(
+                              padding: EdgeInsets.only(right: 12),
+                              child: ShimmerBox(
+                                width: 160,
+                                height: 220,
+                                borderRadius: 16,
+                              ),
+                            );
+                          }
+
+                          final product = products[index];
+                          return ProductCard(
+                            image: product.thumbnail,
+                            price: product.price.toString(),
+                            name: product.title,
+                            rate: product.rating.toString(),
+                            discount:
+                            product.discountPercentage.toString(),
+                            onTap: () {},
+                          );
                         },
                       ),
+                    ),
 
-                      SizedBox(height: 13.h),
+                    SizedBox(height: 13.h),
 
-                      ///  Products List
-                      SizedBox(
-                        height: 240,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: isLoading ? 5 : products.length,
-                          itemBuilder: (context, index) {
-                            final product = isLoading ? null : products[index];
-                            return ProductCard(
-                              image: product?.thumbnail ?? '',
-                              price: product?.price.toString() ?? '',
-                              name: product?.title ?? '',
-                              rate: product?.rating.toString() ?? '',
-                              discount:
-                                  product?.discountPercentage.toString() ?? '',
-                              onTap: () {
-                                // product details
-                              },
-                            );
-                          },
+                    ///  Categories Header
+                     CustomRow(
+                      text1: "Categories",
+                      text2: "View all",
+                       onTap: (){
+                         Navigator.pushNamed(context, AppRoutes.allCategory);
+                       },
+                    ),
+
+                    SizedBox(height: 13.h),
+
+                    ///  Categories
+                    SizedBox(
+                      height: 200,
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
+                          childAspectRatio: 0.75,
                         ),
-                      ),
+                        itemCount: isLoading ? 6 : categories.length,
+                        itemBuilder: (context, index) {
+                          if (isLoading) {
+                            return  ShimmerBox(
+                              width: double.infinity,
+                              height: 120,
+                              borderRadius: 12,
+                            );
+                          }
 
-                      SizedBox(height: 13.h),
-
-                      ///  Categories Header
-                      CustomRow(
-                        text1: "Categories",
-                        text2: "View all",
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.allCategory);
+                          final category = categories[index];
+                          return CategoryCard(
+                            category: category,
+                            onTap: () {},
+                          );
                         },
                       ),
+                    ),
 
-                      SizedBox(height: 13.h),
+                    SizedBox(height: 13.h),
 
-                      ///  Categories List
-                      SizedBox(
-                        height: 200,
-                        child: GridView.builder(
-                          shrinkWrap: true,
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            mainAxisSpacing: 2,
-                            crossAxisSpacing: 2,
-                            childAspectRatio: 0.75,
-                          ),
-                          itemCount: isLoading ? 6 : categories.length,
-                          itemBuilder: (context, index) {
-                            final category = isLoading ? null : categories[index];
-                            return CategoryCard(
-                              category: category,
-                              onTap: (){
-                                // products by category screen
-                              },
+                    ///  Brands Header
+                     CustomRow(
+                      text1: "Brands",
+                      text2: "View all",
+                       onTap: (){
+                         Navigator.pushNamed(context, AppRoutes.allBrands);
+                       },
+                    ),
+
+                    SizedBox(height: 13.h),
+
+                    ///  Brands List
+                    SizedBox(
+                      height: 160,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: isLoading ? 5 : brands.length,
+                        itemBuilder: (context, index) {
+                          if (isLoading) {
+                            return const Padding(
+                              padding: EdgeInsets.only(right: 12),
+                              child: ShimmerBox(
+                                width: 140,
+                                height: 140,
+                                borderRadius: 16,
+                              ),
                             );
-                          },
-                        ),
-                      ),
+                          }
 
-                      SizedBox(height: 13.h),
-
-                      ///  Brands Header
-                      CustomRow(
-                        text1: "Brands",
-                        text2: "View all",
-                        onTap: () {},
+                          final brand = brands[index];
+                          return BrandCard(brand: brand);
+                        },
                       ),
-                      SizedBox(height: 13.h),
-                      
-                      /// Brand List
-                      SizedBox(
-                        height: 160,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: brands.length,
-                            itemBuilder: (context, index) {
-                              final brand = isLoading ? null : brands[index];
-                              return BrandCard(brand: brand) ;
-                            },
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -197,3 +238,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
