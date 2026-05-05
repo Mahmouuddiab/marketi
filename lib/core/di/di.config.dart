@@ -20,6 +20,15 @@ import '../../features/auth/domain/repository/auth_repository.dart' as _i961;
 import '../../features/auth/domain/usecase/login_usecase.dart' as _i911;
 import '../../features/auth/domain/usecase/register_usecase.dart' as _i769;
 import '../../features/auth/presentation/cubit/auth_cubit.dart' as _i117;
+import '../../features/cart/data/data%20source/cart_remote_ds.dart' as _i597;
+import '../../features/cart/data/data%20source/cart_remote_ds_impl.dart'
+    as _i509;
+import '../../features/cart/data/repository/cart_repository_impl.dart'
+    as _i1063;
+import '../../features/cart/domain/repository/cart_repository.dart' as _i26;
+import '../../features/cart/domain/usecase/add_to_cart_usecase.dart' as _i738;
+import '../../features/cart/domain/usecase/get_cart_usecase.dart' as _i624;
+import '../../features/cart/presentation/cubit/cart_cubit.dart' as _i499;
 import '../../features/home/data/data%20source/home_remote_ds.dart' as _i520;
 import '../../features/home/data/data%20source/home_remote_ds_impl.dart'
     as _i740;
@@ -39,6 +48,10 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     gh.singleton<_i172.DioHelper>(() => _i172.DioHelper());
+    gh.factory<_i597.CartRemoteDs>(() => _i509.CartRemoteDsImpl());
+    gh.factory<_i26.CartRepository>(
+      () => _i1063.CartRepositoryImpl(gh<_i597.CartRemoteDs>()),
+    );
     gh.factory<_i6.AuthRemoteDs>(() => _i624.AuthRemoteDsImpl());
     gh.factory<_i520.HomeRemoteDs>(() => _i740.HomeRemoteDsImpl());
     gh.factory<_i541.HomeRepository>(
@@ -53,6 +66,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i769.RegisterUseCase>(
       () => _i769.RegisterUseCase(gh<_i961.AuthRepository>()),
     );
+    gh.factory<_i738.AddToCartUseCase>(
+      () => _i738.AddToCartUseCase(gh<_i26.CartRepository>()),
+    );
+    gh.factory<_i624.GetCartUseCase>(
+      () => _i624.GetCartUseCase(gh<_i26.CartRepository>()),
+    );
     gh.factory<_i146.BrandUseCase>(
       () => _i146.BrandUseCase(gh<_i541.HomeRepository>()),
     );
@@ -61,6 +80,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i1022.ProductUseCase>(
       () => _i1022.ProductUseCase(gh<_i541.HomeRepository>()),
+    );
+    gh.factory<_i499.CartCubit>(
+      () => _i499.CartCubit(
+        gh<_i738.AddToCartUseCase>(),
+        gh<_i624.GetCartUseCase>(),
+      ),
     );
     gh.factory<_i117.AuthCubit>(
       () => _i117.AuthCubit(

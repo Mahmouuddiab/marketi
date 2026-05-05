@@ -49,11 +49,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         bloc: authCubit,
         listener: (context, state) {
           if (state is RegisterSuccessState) {
-            AppToast.success(context, "Registered successfully");
+            AppToast.show("Success Register",type: ToastType.success);
           }
 
           if (state is RegisterErrorState) {
-            AppToast.error(context, state.error);
+            AppToast.show("Success Register",type: ToastType.error);
           }
         },
         builder: (context, state) {

@@ -1,24 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:another_flushbar/flushbar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+enum ToastType { success, error, warning, info }
 
 class AppToast {
-  static void success(BuildContext context, String message) {
-    Flushbar(
-      message: message,
-      duration: const Duration(seconds: 3),
-      backgroundColor: Colors.green,
-      icon: const Icon(Icons.check_circle, color: Colors.white),
-      flushbarPosition: FlushbarPosition.TOP,
-    ).show(context);
+  static void show(
+      String message, {
+        ToastType type = ToastType.info,
+      }) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: _getBackgroundColor(type),
+      textColor: Colors.white,
+      fontSize: 14,
+    );
   }
 
-  static void error(BuildContext context, String message) {
-    Flushbar(
-      message: message,
-      duration: const Duration(seconds: 3),
-      backgroundColor: Colors.red,
-      icon: const Icon(Icons.error, color: Colors.white),
-      flushbarPosition: FlushbarPosition.TOP,
-    ).show(context);
+  static Color _getBackgroundColor(ToastType type) {
+    switch (type) {
+      case ToastType.success:
+        return Colors.green;
+      case ToastType.error:
+        return Colors.red;
+      case ToastType.warning:
+        return Colors.orange;
+      case ToastType.info:
+        return Colors.black87;
+    }
   }
 }
