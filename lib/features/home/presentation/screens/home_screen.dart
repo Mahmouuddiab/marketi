@@ -15,6 +15,8 @@ import 'package:marketi/features/home/presentation/widgets/banner_show.dart';
 import 'package:marketi/features/home/presentation/widgets/custom_row.dart';
 import 'package:marketi/features/home/presentation/widgets/home_field.dart';
 import 'package:marketi/features/home/presentation/widgets/product_card.dart';
+import 'package:marketi/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:marketi/features/profile/presentation/cubit/profile_state.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,11 +27,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final HomeCubit homeCubit = getIt<HomeCubit>();
+  final ProfileCubit profileCubit = getIt<ProfileCubit>();
 
   @override
   void initState() {
     super.initState();
     homeCubit.getHome();
+    profileCubit.getProfile();
   }
 
   @override
@@ -56,12 +60,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     ///  Header
                     Row(
                       children: [
-                        Text(
-                          "Hello, User",
-                          style: GoogleFonts.poppins(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        BlocBuilder<ProfileCubit, ProfileState>(
+                          bloc: profileCubit,
+                          builder: (context, state) {
+                            String displayName = "User";
+                            if (state is ProfileSuccess) {
+                              displayName = state.user.name;
+                            }
+                            return Text(
+                              "Hello, $displayName",
+                              style: GoogleFonts.poppins(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            );
+                          },
                         ),
                         const Spacer(),
                         SvgPicture.asset(

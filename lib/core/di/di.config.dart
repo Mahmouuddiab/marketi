@@ -38,6 +38,16 @@ import '../../features/home/domain/usecase/brand_usecase.dart' as _i146;
 import '../../features/home/domain/usecase/category_usecase.dart' as _i589;
 import '../../features/home/domain/usecase/product_usecase.dart' as _i1022;
 import '../../features/home/presentation/cubit/home_cubit.dart' as _i9;
+import '../../features/profile/data/data%20source/profile_remote_ds.dart'
+    as _i640;
+import '../../features/profile/data/data%20source/profile_remote_ds_impl.dart'
+    as _i56;
+import '../../features/profile/data/repository/profile_repository_impl.dart'
+    as _i309;
+import '../../features/profile/domain/repository/profile_repository.dart'
+    as _i364;
+import '../../features/profile/domain/usecase/profile_usecase.dart' as _i721;
+import '../../features/profile/presentation/cubit/profile_cubit.dart' as _i36;
 import '../network/dio_helper.dart' as _i172;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -57,8 +67,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i541.HomeRepository>(
       () => _i9.HomeRepositoryImpl(gh<_i520.HomeRemoteDs>()),
     );
+    gh.factory<_i640.ProfileRemoteDs>(() => _i56.ProfileRemoteDsImpl());
     gh.factory<_i961.AuthRepository>(
       () => _i409.AuthRepositoryImpl(gh<_i6.AuthRemoteDs>()),
+    );
+    gh.factory<_i364.ProfileRepository>(
+      () => _i309.ProfileRepositoryImpl(gh<_i640.ProfileRemoteDs>()),
     );
     gh.factory<_i911.LoginUseCase>(
       () => _i911.LoginUseCase(gh<_i961.AuthRepository>()),
@@ -93,12 +107,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i911.LoginUseCase>(),
       ),
     );
+    gh.factory<_i721.ProfileUseCase>(
+      () => _i721.ProfileUseCase(gh<_i364.ProfileRepository>()),
+    );
     gh.factory<_i9.HomeCubit>(
       () => _i9.HomeCubit(
         gh<_i1022.ProductUseCase>(),
         gh<_i589.CategoryUseCase>(),
         gh<_i146.BrandUseCase>(),
       ),
+    );
+    gh.factory<_i36.ProfileCubit>(
+      () => _i36.ProfileCubit(gh<_i721.ProfileUseCase>()),
     );
     return this;
   }

@@ -3,7 +3,7 @@ import 'package:marketi/core/utils/app_colors.dart';
 import 'package:marketi/features/cart/presentation/screens/cart_screen.dart';
 import 'package:marketi/features/favorite/favorite_screen.dart';
 import 'package:marketi/features/home/presentation/screens/home_screen.dart';
-import 'package:marketi/features/profile/profile_screen.dart';
+import 'package:marketi/features/profile/presentation/screens/profile_screen.dart';
 
 class Root extends StatefulWidget {
   const Root({super.key});

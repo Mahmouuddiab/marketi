@@ -23,6 +23,7 @@ class _CartScreenState extends State<CartScreen> {
       appBar: AppBar(
         title: const Text("My Cart 🛒"),
         centerTitle: true,
+        leading: SizedBox(),
       ),
       body: BlocBuilder<CartCubit, CartState>(
         builder: (context, state) {

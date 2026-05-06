@@ -5,6 +5,7 @@ import 'package:marketi/core/router/app_router.dart';
 import 'package:marketi/core/router/app_routes.dart';
 import 'package:marketi/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:marketi/features/home/presentation/cubit/home_cubit.dart';
+import 'package:marketi/features/profile/presentation/cubit/profile_cubit.dart';
 import 'core/di/di.dart';
 
 void main() {
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
           providers: [
             BlocProvider(create: (context) => getIt<HomeCubit>()),
             BlocProvider(create: (context) => getIt<CartCubit>()),
+            BlocProvider(create: (context) => getIt<ProfileCubit>()),
           ],
           child: MaterialApp(
             title: 'Marketi',
