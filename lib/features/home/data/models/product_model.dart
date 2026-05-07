@@ -1,4 +1,4 @@
-import '../../domain/entity/product_entity.dart';
+import 'package:marketi/features/home/domain/entity/product_entity.dart';
 
 class ProductModel extends ProductEntity {
   ProductModel({
@@ -34,7 +34,8 @@ class ProductModel extends ProductEntity {
       rating: (json['rating'] ?? 0).toDouble(),
       stock: json['stock'] ?? 0,
 
-      tags: (json['tags'] as List?)
+      tags:
+      (json['tags'] as List?)
           ?.map((e) => e.toString())
           .toList() ??
           [],
@@ -49,12 +50,37 @@ class ProductModel extends ProductEntity {
       returnPolicy: json['returnPolicy'] ?? '',
       minimumOrderQuantity: json['minimumOrderQuantity'] ?? 0,
 
-      images: (json['images'] as List?)
+      images:
+      (json['images'] as List?)
           ?.map((e) => e.toString())
           .toList() ??
           [],
 
       thumbnail: json['thumbnail'] ?? '',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'category': category,
+      'price': price,
+      'discountPercentage': discountPercentage,
+      'rating': rating,
+      'stock': stock,
+      'tags': tags,
+      'brand': brand,
+      'sku': sku,
+      'weight': weight,
+      'warrantyInformation': warrantyInformation,
+      'shippingInformation': shippingInformation,
+      'availabilityStatus': availabilityStatus,
+      'returnPolicy': returnPolicy,
+      'minimumOrderQuantity': minimumOrderQuantity,
+      'images': images,
+      'thumbnail': thumbnail,
+    };
   }
 }

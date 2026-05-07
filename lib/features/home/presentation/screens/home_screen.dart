@@ -82,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 25.h,
                           width: 25.w,
                         ),
+                        SizedBox(width: 5.w,)
                       ],
                     ),
 
@@ -178,7 +179,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 200,
                       child: GridView.builder(
                         shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
                         gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:marketi/core/router/app_router.dart';
 import 'package:marketi/core/router/app_routes.dart';
 import 'package:marketi/features/cart/presentation/cubit/cart_cubit.dart';
@@ -8,9 +10,11 @@ import 'package:marketi/features/home/presentation/cubit/home_cubit.dart';
 import 'package:marketi/features/profile/presentation/cubit/profile_cubit.dart';
 import 'core/di/di.dart';
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
+  await Hive.initFlutter();
+  await Hive.openBox('home_cache');
   runApp(const MyApp());
 }
 
