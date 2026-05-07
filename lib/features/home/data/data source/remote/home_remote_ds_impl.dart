@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:marketi/core/cache/cache_helper.dart';
 import 'package:marketi/core/network/dio_helper.dart';
-import 'package:marketi/features/home/data/data%20source/home_remote_ds.dart';
+import 'package:marketi/features/home/data/data%20source/remote/home_remote_ds.dart';
 import 'package:marketi/features/home/data/models/brand_model.dart';
 import 'package:marketi/features/home/data/models/category_model.dart';
 import 'package:marketi/features/home/data/models/product_model.dart';

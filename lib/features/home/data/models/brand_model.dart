@@ -13,4 +13,10 @@ class BrandModel extends BrandEntity {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'emoji': emoji,
+    };
+  }
 }

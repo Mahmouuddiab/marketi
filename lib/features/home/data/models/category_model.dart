@@ -1,7 +1,7 @@
 import 'package:marketi/features/home/domain/entity/category_entity.dart';
 
 class CategoryModel extends CategoryEntity {
-   CategoryModel({
+  CategoryModel({
     required super.slug,
     required super.name,
     required super.url,
@@ -17,5 +17,12 @@ class CategoryModel extends CategoryEntity {
     );
   }
 
-
+  Map<String, dynamic> toJson() {
+    return {
+      'slug': slug,
+      'name': name,
+      'url': url,
+      'image': image,
+    };
+  }
 }
