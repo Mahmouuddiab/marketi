@@ -7,4 +7,6 @@ class AppRoutes {
   static const String allProduct = '/allProductScreen';
   static const String allCategory = '/allCategoryScreen';
   static const String allBrands = '/allBrandScreen';
+  static const String termServices = '/termServices';
+  static const String helpSupport = '/helpSupport';
 }
