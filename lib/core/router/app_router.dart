@@ -5,6 +5,8 @@ import 'package:marketi/features/boarding%20pages/screen/on_boarding_screen.dart
 import 'package:marketi/features/home/presentation/screens/all_brand_screen.dart';
 import 'package:marketi/features/home/presentation/screens/all_category_screen.dart';
 import 'package:marketi/features/home/presentation/screens/all_product_screeen.dart';
+import 'package:marketi/features/profile/presentation/widgets/hlep_support.dart';
+import 'package:marketi/features/profile/presentation/widgets/term_of_srevices.dart';
 import 'package:marketi/root.dart';
 import 'package:marketi/splash_screen.dart';
 import 'app_routes.dart';
@@ -28,6 +30,10 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => AllCategoryScreen());
       case AppRoutes.allBrands:
         return MaterialPageRoute(builder: (_) => AllBrandScreen());
+      case AppRoutes.termServices:
+        return MaterialPageRoute(builder: (_) => TermsOfServiceScreen());
+      case AppRoutes.helpSupport:
+        return MaterialPageRoute(builder: (_) => HelpSupportScreen());
       default:
         return MaterialPageRoute(
           builder:
