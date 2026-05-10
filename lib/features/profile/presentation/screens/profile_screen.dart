@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:marketi/core/cache/cache_helper.dart';
 import 'package:marketi/core/router/app_routes.dart';
 import 'package:marketi/core/utils/app_colors.dart';
 import 'package:marketi/features/profile/presentation/cubit/profile_cubit.dart';
@@ -46,9 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           builder: (context, state) {
             if (state is ProfileLoading) {
               return const Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.primaryColor,
-                ),
+                child: CircularProgressIndicator(color: AppColors.primaryColor),
               );
             }
 
@@ -97,17 +96,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 width: 2,
                               ),
                             ),
-                            child: ClipOval(
-                              child: Icon(Icons.person),
-                            ),
+                            child: ClipOval(child: Icon(Icons.person)),
                           ),
 
                           const SizedBox(width: 18),
 
                           Expanded(
                             child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   user.name ?? "",
@@ -121,8 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 SizedBox(height: 3.h),
 
                                 Text(
-                                  user.email ??
-                                      'example@gmail.com',
+                                  user.email ?? 'example@gmail.com',
                                   style: TextStyle(
                                     color: Colors.grey.shade600,
                                     fontSize: 13,
@@ -135,8 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: AppColors.primaryColor
-                                  .withOpacity(.1),
+                              color: AppColors.primaryColor.withOpacity(.1),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
@@ -153,9 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     /// FULL SCREEN MENU
                     Expanded(
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 14),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(24),
@@ -244,7 +236,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: ProfileListItem(
                                 icon: Icons.power_settings_new_rounded,
                                 title: 'Sign out',
-                                onTap: () {},
+                                onTap: () {
+                                  _showLogoutDialog(context);
+                                },
                               ),
                             ),
                           ],
@@ -264,6 +258,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+}
+
+/// LOGOUT DIALOG
+void _showLogoutDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text("Sign out"),
+        content: Text("are you sure you want to sign out ?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              _performLogout(context);
+              Navigator.pop(context);
+            },
+            child: Text("Sign out", style: const TextStyle(color: Colors.red)),
+          ),
+        ],
+      );
+    },
+  );
 }
 
 class ProfileListItem extends StatelessWidget {
@@ -300,11 +320,7 @@ class ProfileListItem extends StatelessWidget {
                   color: AppColors.primaryColor.withOpacity(.1),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: Icon(
-                  icon,
-                  color: AppColors.primaryColor,
-                  size: 25,
-                ),
+                child: Icon(icon, color: AppColors.primaryColor, size: 25),
               ),
 
               const SizedBox(width: 16),
@@ -331,4 +347,10 @@ class ProfileListItem extends StatelessWidget {
       ),
     );
   }
+}
+
+/// LOGOUT FUNCTION
+void _performLogout(BuildContext context) async {
+  await CacheHelper.clearToken();
+  Navigator.pushReplacementNamed(context, AppRoutes.login);
 }
