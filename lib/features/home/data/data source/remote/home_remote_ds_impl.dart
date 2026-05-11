@@ -77,4 +77,47 @@ class HomeRemoteDsImpl implements HomeRemoteDs {
       throw Exception('Server error: ${response.statusCode}');
     }
   }
+
+  @override
+  Future<List<ProductModel>> productsByCategory({
+    required String category,
+    required int skip,
+    required int limit,
+  }) async {
+
+    final token = await CacheHelper.getToken();
+
+    final response = await DioHelper.get(
+      url:
+      "https://supermarket-dan1.onrender.com/api/v1/home/products/category/$category",
+      queryParameters: {
+        'skip': skip,
+        'limit': limit,
+      },
+      options: Options(
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+
+      print("products by category: ${response.data}");
+
+      final List data = response.data['list'];
+
+      return data
+          .map((json) => ProductModel.fromJson(json))
+          .toList();
+
+    } else {
+
+      throw Exception(
+        'Server error: ${response.statusCode}',
+      );
+    }
+  }
+
 }

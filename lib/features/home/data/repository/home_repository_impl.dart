@@ -4,6 +4,7 @@ import 'package:marketi/features/home/data/data%20source/remote/home_remote_ds.d
 import 'package:marketi/features/home/data/models/brand_model.dart';
 import 'package:marketi/features/home/data/models/category_model.dart';
 import 'package:marketi/features/home/data/models/product_model.dart';
+import 'package:marketi/features/home/domain/entity/product_entity.dart';
 import 'package:marketi/features/home/domain/repository/home_repository.dart';
 
 @Injectable(as: HomeRepository)
@@ -71,6 +72,39 @@ class HomeRepositoryImpl implements HomeRepository {
     final response = await remote.brands();
 
     await local.cacheBrands(response);
+
+    return response;
+  }
+
+  @override
+  Future<List<ProductEntity>> productsByCategory({
+    required String category,
+    required int skip,
+    required int limit,
+  }) async {
+
+    final cacheKey =
+        'products_${category}_${skip}_$limit';
+
+    // 1. CACHE
+    final cached = local.getProducts(cacheKey);
+
+    if (cached != null && cached.isNotEmpty) {
+      return cached;
+    }
+
+    // 2. REMOTE
+    final response = await remote.productsByCategory(
+      category: category,
+      skip: skip,
+      limit: limit,
+    );
+
+    // 3. CACHE
+    await local.cacheProducts(
+      cacheKey,
+      response,
+    );
 
     return response;
   }

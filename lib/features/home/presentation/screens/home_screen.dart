@@ -5,6 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:marketi/core/router/app_routes.dart';
 import 'package:marketi/core/shimmer/shimmer_box.dart';
+import 'package:marketi/features/home/presentation/screens/product_by_category_screen.dart';
+import 'package:marketi/features/home/presentation/screens/product_details.dart';
 import 'package:marketi/features/home/presentation/widgets/brand_card.dart';
 import 'package:marketi/features/home/presentation/widgets/category_card.dart';
 import 'package:marketi/core/di/di.dart';
@@ -155,7 +157,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             rate: product.rating.toString(),
                             discount:
                             product.discountPercentage.toString(),
-                            onTap: () {},
+                            onTap: (){
+                              Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: product),));
+                            },
                           );
                         },
                       ),
@@ -199,7 +204,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           final category = categories[index];
                           return CategoryCard(
                             category: category,
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => ProductsByCategoryScreen(category: category.name),));
+                            },
                           );
                         },
                       ),

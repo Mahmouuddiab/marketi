@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketi/core/utils/app_colors.dart';
 import 'package:marketi/features/home/presentation/cubit/home_cubit.dart';
 import 'package:marketi/features/home/presentation/cubit/home_state.dart';
+import 'package:marketi/features/home/presentation/screens/product_by_category_screen.dart';
 import 'package:marketi/features/home/presentation/widgets/category_list_item.dart';
 
 class AllCategoryScreen extends StatefulWidget {
@@ -68,7 +69,10 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
                 final category = state.categories[index];
                 return CategoryListItem(
                     category: category,
-                    onTap: (){}
+                    onTap: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => ProductsByCategoryScreen(category: category.name),));
+                    }
                 );
               },
             );
