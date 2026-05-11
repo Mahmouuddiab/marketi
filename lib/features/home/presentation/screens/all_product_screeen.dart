@@ -7,6 +7,7 @@ import 'package:marketi/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:marketi/features/cart/presentation/cubit/cart_state.dart';
 import 'package:marketi/features/home/presentation/cubit/home_cubit.dart';
 import 'package:marketi/features/home/presentation/cubit/home_state.dart';
+import 'package:marketi/features/home/presentation/screens/product_details.dart';
 import 'package:marketi/features/home/presentation/widgets/product_card.dart';
 
 class AllProductsScreen extends StatefulWidget {
@@ -43,7 +44,6 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
     super.dispose();
   }
 
-
   Widget _buildLoadingIndicator({String message = "Loading..."}) {
     return Center(
       child: Container(
@@ -72,10 +72,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
               ),
             ),
             const SizedBox(width: 12),
-            Text(
-              message,
-              style: const TextStyle(fontWeight: FontWeight.w500),
-            ),
+            Text(message, style: const TextStyle(fontWeight: FontWeight.w500)),
           ],
         ),
       ),
@@ -84,14 +81,14 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CartCubit,CartState>(
+    return BlocListener<CartCubit, CartState>(
       listener: (context, state) {
         if (state is AddToCartSuccess) {
-          AppToast.show("Added to cart",type: ToastType.success);
+          AppToast.show("Added to cart", type: ToastType.success);
         }
 
         if (state is AddToCartError) {
-          AppToast.show("Failed to add",type: ToastType.error);
+          AppToast.show("Failed to add", type: ToastType.error);
         }
       },
       child: Scaffold(
@@ -101,10 +98,10 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
           centerTitle: true,
           elevation: 0,
           leading: IconButton(
-              onPressed: (){
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back_ios,color: AppColors.darkblue700,)
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios, color: AppColors.darkblue700),
           ),
         ),
         body: BlocBuilder<HomeCubit, HomeState>(
@@ -143,28 +140,35 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                     SliverPadding(
                       padding: const EdgeInsets.all(12),
                       sliver: SliverGrid(
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.77,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                        ),
-                        delegate: SliverChildBuilderDelegate(
-                              (context, index) {
-                            final product = state.products[index];
-                            return ProductCard(
-                              image: product.thumbnail,
-                              price: product.price.toString(),
-                              name: product.title,
-                              rate: product.rating.toString(),
-                              discount: product.discountPercentage.toString(),
-                              onTap: () {
-                                context.read<CartCubit>().addToCart(product.id);
-                              },
-                            );
-                          },
-                          childCount: state.products.length,
-                        ),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.77,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                            ),
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          final product = state.products[index];
+                          return ProductCard(
+                            image: product.thumbnail,
+                            price: product.price.toString(),
+                            name: product.title,
+                            rate: product.rating.toString(),
+                            discount: product.discountPercentage.toString(),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProductDetailsScreen(product: product),
+                                ),
+                              );
+                            },
+                            onTapButton: () {
+                              context.read<CartCubit>().addToCart(product.id);
+                            },
+                          );
+                        }, childCount: state.products.length),
                       ),
                     ),
                     // This SliverToBoxAdapter spans the full width, centering your loader
