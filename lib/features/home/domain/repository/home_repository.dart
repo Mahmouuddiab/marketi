@@ -13,6 +13,12 @@ abstract class HomeRepository {
     required int skip,
     required int limit,
   });
+
+  Future<List<ProductEntity>> productsByBrand({
+    required String brand,
+    required int skip,
+    required int limit,
+  });
   Future<List<CategoryEntity>> categories();
 
   Future<List<BrandEntity>> brands();

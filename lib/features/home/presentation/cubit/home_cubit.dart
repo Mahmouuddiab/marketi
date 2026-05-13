@@ -5,6 +5,7 @@ import 'package:marketi/features/home/domain/entity/category_entity.dart';
 import 'package:marketi/features/home/domain/entity/product_entity.dart';
 import 'package:marketi/features/home/domain/usecase/brand_usecase.dart';
 import 'package:marketi/features/home/domain/usecase/category_usecase.dart';
+import 'package:marketi/features/home/domain/usecase/product_by_brand_usecase.dart';
 import 'package:marketi/features/home/domain/usecase/product_by_category_usecase.dart';
 import 'package:marketi/features/home/domain/usecase/product_usecase.dart';
 import 'package:marketi/features/home/presentation/cubit/home_state.dart';
@@ -13,12 +14,14 @@ import 'package:marketi/features/home/presentation/cubit/home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   final ProductUseCase productUseCase;
   final ProductsByCategoryUseCase productsByCategoryUseCase;
+  final ProductsByBrandUseCase productsByBrandUseCase;
   final CategoryUseCase categoryUseCase;
   final BrandUseCase brandUseCase;
 
   HomeCubit(
     this.productUseCase,
     this.productsByCategoryUseCase,
+    this.productsByBrandUseCase,
     this.categoryUseCase,
     this.brandUseCase,
   ) : super(HomeInitial());
@@ -48,6 +51,14 @@ class HomeCubit extends Cubit<HomeState> {
   bool isCategoryLoadingMore = false;
 
   bool categoryHasMore = true;
+
+  List<ProductEntity> brandProducts = [];
+
+  int brandSkip = 0;
+
+  bool isBrandLoadingMore = false;
+
+  bool brandHasMore = true;
 
   /// FIRST LOAD HOME
 
@@ -197,6 +208,82 @@ class HomeCubit extends Cubit<HomeState> {
     }
 
     isCategoryLoadingMore = false;
+  }
+
+  /// GET PRODUCTS BY Brand
+
+  Future<void> getProductsByBrand({required String brand}) async {
+    emit(HomeLoading());
+
+    brandSkip = 0;
+
+    brandProducts.clear();
+
+    brandHasMore = true;
+
+    try {
+      final result = await productsByBrandUseCase.call(
+        brand: brand,
+        skip: brandSkip,
+        limit: limit,
+      );
+
+      brandProducts = result;
+
+      if (result.length < limit) {
+        brandHasMore = false;
+      }
+
+      emit(
+        HomeSuccess(
+          products: brandProducts,
+          hasMore: brandHasMore,
+          categories: categories,
+          brands: brands,
+        ),
+      );
+    } catch (e) {
+      emit(HomeError(e.toString()));
+    }
+  }
+
+  /// LOAD MORE CATEGORY PRODUCTS
+
+  Future<void> loadMoreBrandProducts({required String brand}) async {
+    if (isBrandLoadingMore || !brandHasMore) {
+      return;
+    }
+
+    isBrandLoadingMore = true;
+
+    try {
+      brandSkip += limit;
+
+      final result = await productsByBrandUseCase.call(
+        brand: brand,
+        skip: brandSkip,
+        limit: limit,
+      );
+
+      if (result.isEmpty || result.length < limit) {
+        brandHasMore = false;
+      }
+
+      brandProducts.addAll(result);
+
+      emit(
+        HomeSuccess(
+          products: List.from(brandProducts),
+          hasMore: brandHasMore,
+          categories: List.from(categories),
+          brands: List.from(brands),
+        ),
+      );
+    } catch (e) {
+      emit(HomeError(e.toString()));
+    }
+
+    isBrandLoadingMore = false;
   }
 
   /// REFRESH HOME
