@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketi/core/utils/app_colors.dart';
 import 'package:marketi/features/home/presentation/cubit/home_cubit.dart';
 import 'package:marketi/features/home/presentation/cubit/home_state.dart';
+import 'package:marketi/features/home/presentation/screens/products_by_brand_screen.dart';
 import 'package:marketi/features/home/presentation/widgets/brand_list_item.dart';
 
 class AllBrandScreen extends StatefulWidget {
@@ -67,10 +68,16 @@ class _AllBrandScreenState extends State<AllBrandScreen> {
               itemBuilder: (context, index) {
                 final brand = state.brands[index];
                 return BrandListItem(
-                    brand: brand,
-                    onTap: (){
-
-                    }
+                  brand: brand,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ProductsByBrandScreen(brand: brand.name),
+                      ),
+                    );
+                  },
                 );
               },
             );

@@ -108,4 +108,38 @@ class HomeRepositoryImpl implements HomeRepository {
 
     return response;
   }
+
+  @override
+  Future<List<ProductEntity>> productsByBrand({
+    required String brand,
+    required int skip,
+    required int limit,
+  }) async {
+
+    final cacheKey =
+        'products_${brand}_${skip}_$limit';
+
+    // 1. CACHE
+    final cached = local.getProducts(cacheKey);
+
+    if (cached != null && cached.isNotEmpty) {
+      return cached;
+    }
+
+    // 2. REMOTE
+    final response = await remote.productsByBrand(
+      brand: brand,
+      skip: skip,
+      limit: limit,
+    );
+
+    // 3. CACHE
+    await local.cacheProducts(
+      cacheKey,
+      response,
+    );
+
+    return response;
+  }
+
 }

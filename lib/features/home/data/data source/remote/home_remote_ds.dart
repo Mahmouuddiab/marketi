@@ -14,6 +14,12 @@ abstract class HomeRemoteDs {
     required int limit,
   });
 
+  Future<List<ProductModel>> productsByBrand({
+    required String brand,
+    required int skip,
+    required int limit,
+  });
+
   Future<List<CategoryModel>> categories();
   Future<List<BrandModel>> brands();
 }

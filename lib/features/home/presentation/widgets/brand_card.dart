@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:marketi/core/utils/app_colors.dart';
 import 'package:marketi/features/home/domain/entity/brand_entity.dart';
-import 'package:marketi/features/home/domain/entity/category_entity.dart';
 
 class BrandCard extends StatelessWidget {
   BrandCard({super.key, required this.brand,this.onTap});

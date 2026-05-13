@@ -3,26 +3,35 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketi/features/home/presentation/cubit/home_cubit.dart';
 import 'package:marketi/features/home/presentation/cubit/home_state.dart';
 
-class ProductsByCategoryScreen extends StatefulWidget {
-  final String category;
+class ProductsByBrandScreen extends StatefulWidget {
+  final String brand;
 
-  const ProductsByCategoryScreen({super.key, required this.category});
+  const ProductsByBrandScreen({super.key, required this.brand});
 
   @override
-  State<ProductsByCategoryScreen> createState() => _ProductsByCategoryScreenState();
+  State<ProductsByBrandScreen> createState() => _ProductsByBrandScreenState();
 }
 
-class _ProductsByCategoryScreenState extends State<ProductsByCategoryScreen> {
+class _ProductsByBrandScreenState extends State<ProductsByBrandScreen> {
   final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    context.read<HomeCubit>().getProductsByCategory(category: widget.category);
+
+    print("Selected brand => ${widget.brand}");
+
+    context.read<HomeCubit>().getProductsByBrand(
+      brand: widget.brand,
+    );
 
     scrollController.addListener(() {
-      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent - 300) {
-        context.read<HomeCubit>().loadMoreCategoryProducts(category: widget.category);
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 300) {
+
+        context.read<HomeCubit>().loadMoreBrandProducts(
+          brand: widget.brand,
+        );
       }
     });
   }
@@ -39,7 +48,7 @@ class _ProductsByCategoryScreenState extends State<ProductsByCategoryScreen> {
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
         title: Text(
-          widget.category.toUpperCase(),
+          widget.brand.toUpperCase(),
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, letterSpacing: 1.2),
         ),
         centerTitle: true,
@@ -106,7 +115,7 @@ class _ProductsByCategoryScreenState extends State<ProductsByCategoryScreen> {
           const SizedBox(height: 16),
           Text(message, style: const TextStyle(color: Colors.grey)),
           TextButton(
-            onPressed: () => context.read<HomeCubit>().getProductsByCategory(category: widget.category),
+            onPressed: () => context.read<HomeCubit>().getProductsByBrand(brand: widget.brand),
             child: const Text("Retry"),
           )
         ],
@@ -121,7 +130,7 @@ class _ProductsByCategoryScreenState extends State<ProductsByCategoryScreen> {
         children: [
           Icon(Icons.inventory_2_outlined, size: 64, color: Colors.grey),
           SizedBox(height: 16),
-          Text("No products available in this category.", style: TextStyle(color: Colors.grey)),
+          Text("No products available in this brand.", style: TextStyle(color: Colors.grey)),
         ],
       ),
     );
