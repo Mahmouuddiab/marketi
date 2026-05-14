@@ -56,6 +56,17 @@ import '../../features/profile/domain/repository/profile_repository.dart'
     as _i364;
 import '../../features/profile/domain/usecase/profile_usecase.dart' as _i721;
 import '../../features/profile/presentation/cubit/profile_cubit.dart' as _i36;
+import '../../features/search/data/data%20source/search_remote_ds.dart'
+    as _i958;
+import '../../features/search/data/data%20source/search_remote_ds_impl.dart'
+    as _i323;
+import '../../features/search/data/repository/search_repository_impl.dart'
+    as _i130;
+import '../../features/search/domain/repository/search_repository.dart'
+    as _i535;
+import '../../features/search/domain/usecase/search_products_usecase.dart'
+    as _i89;
+import '../../features/search/presentation/cubit/search_cubit.dart' as _i341;
 import '../network/dio_helper.dart' as _i172;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -74,6 +85,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i6.AuthRemoteDs>(() => _i624.AuthRemoteDsImpl());
     gh.factory<_i26.CartRepository>(
         () => _i1063.CartRepositoryImpl(gh<_i597.CartRemoteDs>()));
+    gh.factory<_i958.SearchRemoteDs>(() => _i323.SearchRemoteDsImpl());
     gh.factory<_i256.HomeLocalDs>(() => _i585.HomeLocalDsImpl());
     gh.factory<_i889.HomeRemoteDs>(() => _i170.HomeRemoteDsImpl());
     gh.factory<_i640.ProfileRemoteDs>(() => _i56.ProfileRemoteDsImpl());
@@ -81,6 +93,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i738.AddToCartUseCase(gh<_i26.CartRepository>()));
     gh.factory<_i624.GetCartUseCase>(
         () => _i624.GetCartUseCase(gh<_i26.CartRepository>()));
+    gh.factory<_i535.SearchRepository>(
+        () => _i130.SearchRepositoryImpl(gh<_i958.SearchRemoteDs>()));
     gh.factory<_i961.AuthRepository>(
         () => _i409.AuthRepositoryImpl(gh<_i6.AuthRemoteDs>()));
     gh.factory<_i541.HomeRepository>(() => _i9.HomeRepositoryImpl(
@@ -97,6 +111,8 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i36.ProfileCubit>(
         () => _i36.ProfileCubit(gh<_i721.ProfileUseCase>()));
+    gh.factory<_i89.SearchProductsUseCase>(
+        () => _i89.SearchProductsUseCase(gh<_i535.SearchRepository>()));
     gh.factory<_i1022.ProductUseCase>(
         () => _i1022.ProductUseCase(gh<_i541.HomeRepository>()));
     gh.factory<_i146.BrandUseCase>(
@@ -122,6 +138,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i769.RegisterUseCase>(),
           gh<_i911.LoginUseCase>(),
         ));
+    gh.factory<_i341.SearchCubit>(
+        () => _i341.SearchCubit(gh<_i89.SearchProductsUseCase>()));
     return this;
   }
 }
