@@ -9,6 +9,7 @@ import 'package:marketi/features/home/presentation/cubit/home_cubit.dart';
 import 'package:marketi/features/home/presentation/cubit/home_state.dart';
 import 'package:marketi/features/home/presentation/screens/product_details.dart';
 import 'package:marketi/features/home/presentation/widgets/product_card.dart';
+import 'package:marketi/features/search/presentation/screens/search_screen.dart';
 
 class AllProductsScreen extends StatefulWidget {
   const AllProductsScreen({super.key});
@@ -103,6 +104,14 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
             },
             icon: Icon(Icons.arrow_back_ios, color: AppColors.darkblue700),
           ),
+          actions: [
+            IconButton(
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen(),));
+                },
+                icon: Icon(Icons.search)
+            )
+          ],
         ),
         body: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
